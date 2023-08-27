@@ -1,0 +1,70 @@
+import random
+
+def generate_number(min_value, max_value):
+  """Generates a random number between min_value and max_value."""
+  return random.randint(min_value, max_value)
+
+def get_user_guess():
+  """Gets a number guess from the user."""
+  while True:
+    guess = input("Enter your guess: ")
+    try:
+      guess = int(guess)
+      break
+    except ValueError:
+      print("Please enter a valid number.")
+  return guess
+
+def compare_numbers(number, guess):
+  """Compares two numbers and returns a message."""
+  if number == guess:
+    return "You guessed the number correctly!"
+  else:
+    difference = number - guess
+    if difference > 0:
+      clue = "The number is higher than your guess."
+    elif difference < 0:
+      clue = "The number is lower than your guess."
+    else:
+      clue = "The number is equal to your guess."
+    return "Your guess is incorrect. {} {}".format(clue, difference)
+
+def give_clues(number, guess):
+  """Gives clues to the user about the number."""
+  difference = number - guess
+  clues = []
+  if difference > 0:
+    clues.append("The number is higher than your guess.")
+  elif difference < 0:
+    clues.append("The number is lower than your guess.")
+  if number % 2 == 0:
+    clues.append("The number is even.")
+  else:
+    clues.append("The number is odd.")
+  if number % 3 == 0:
+    clues.append("The number is divisible by 3.")
+  if number % 5 == 0:
+    clues.append("The number is divisible by 5.")
+  return clues
+
+def main():
+  """The main function."""
+  number = generate_number(1, 100)
+  score = 10
+  while score > 0:
+    guess = get_user_guess()
+    clues = give_clues(number, guess)
+    message = compare_numbers(number, guess)
+    print(message)
+    if clues:
+      print("Here are some clues:")
+      for clue in clues:
+        print(clue)
+    score -= 1
+  if score == 0:
+    print("You ran out of guesses. The number was {}.".format(number))
+  else:
+    print("Congratulations! You won the game!")
+
+if __name__ == "__main__":
+  main()
